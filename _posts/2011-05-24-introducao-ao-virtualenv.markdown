@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Introdução ao virtualenv
+title: Introdu&ccedil;&atilde;o ao virtualenv
 ---
 
 Uma das ferramentas que eu mais gosto do ecossistema  _ruby_ &eacute; o

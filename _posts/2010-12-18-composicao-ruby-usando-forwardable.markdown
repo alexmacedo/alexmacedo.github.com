@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Composição em ruby usando Forwardable
+title: Composi&ccedil;&atilde;o em ruby usando Forwardable
 ---
 
 > Prefira composição à herança.
