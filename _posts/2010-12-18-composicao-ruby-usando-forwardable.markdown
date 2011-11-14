@@ -1,3 +1,8 @@
+---
+layout: post
+title: Composição em ruby usando Forwardable
+---
+
 > Prefira composição à herança.
 
 Essa frase é um dos mantras da orientação a objetos. Me lembro de ter
@@ -11,7 +16,7 @@ jeito, não quero
 discutir quando ou não usar herança, e sim apenas mostrar uma maneira de
 (talvez) facilitar a composição em _ruby_.
 
-=== Forwarding ===
+### Forwarding
 
 Ao utilizar composição, em geral utilizamos uma técnica chamada
 _forwarding_, isto é,
@@ -23,7 +28,7 @@ objeto, por isso também
 
 Veja um exemplo abaixo de _forwarding_:
 
-   #!ruby
+   {% highlight ruby %}
    class Motor
      def liga
        puts "Ligando o motor."
@@ -55,6 +60,7 @@ Veja um exemplo abaixo de _forwarding_:
    # Ligando o motor.
    c.desliga_motor
    # Desligando o motor.
+   {% endhighlight %}
 
 Esse exemplo é bem simples e apesar de não ser muito útil, serve para
 ilustrar o conceito.
@@ -70,7 +76,7 @@ motor. Mas e se o Motor tivesse algumas dezenas de métodos? Teríamos
 que escrever um monte
 de métodos só para isso?
 
-=== Usando o módulo Forwardable ===
+### Usando o módulo Forwardable
 
 Felizmente não. Em _ruby_ temos alguns atalhos quando queremos definir
 _forwarding_, e para
@@ -78,7 +84,7 @@ isso precisamos do módulo **Forwardable**. Veja abaixo a classe Carro
 refatorada para
 utilizar este módulo:
 
-   #!ruby
+   {% highlight ruby %}
    require "forwardable"
 
    class Carro
@@ -98,6 +104,7 @@ utilizar este módulo:
    # Ligando o motor.
    c.desliga_motor
    # Desligando o motor.
+   {% endhighlight %}
 
 
 O truque fica por conta do método **def_delegator**. Ele recebe até 3
@@ -127,7 +134,7 @@ uma lista com o nome de todos os métodos que vamos fazer _forwarding_.
 Neste caso,
 não podemos definir um _alias_ para os métodos.
 
-   #!ruby
+   {% highlight ruby %}
    require "forwardable"
 
    class Carro
@@ -145,6 +152,7 @@ não podemos definir um _alias_ para os métodos.
    # Ligando o motor.
    c.desliga
    # Desligando o motor.
+   {% endhighlight %}
 
 
 E caso a gente queira mudar os nomes dos métodos? Bem, sempre podemos
@@ -153,7 +161,7 @@ Se os nomes que vão ser sobreescritos seguirem um determinado padrão,
 ainda podemos usar
 o _def_delegator_, e colocá-lo dentro de um loop. Veja o exemplo:
 
-   #!ruby
+   {% highlight ruby %}
    require "forwardable"
 
    class Carro
@@ -173,6 +181,7 @@ o _def_delegator_, e colocá-lo dentro de um loop. Veja o exemplo:
    # Ligando o motor.
    c.desliga_motor
    # Desligando o motor.
+   {% endhighlight %}
 
 Nesse caso colocamos no array todos os métodos que vamos realizar
 _forwarding_, e

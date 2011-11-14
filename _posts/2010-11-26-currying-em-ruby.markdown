@@ -1,3 +1,8 @@
+---
+layout: post
+title: Currying em ruby
+---
+
 Seguindo o [post anterior](http://alexandrebm.com/closures-em-ruby),
 vou continuar
 falando sobre caracter&iacute;sticas da programa&ccedil;&atilde;o funcional utilizando ruby.
@@ -12,15 +17,17 @@ que recebem apenas um argumento.
 A defini&ccedil;&atilde;o ainda parece estranha? Talvez um exemplo com c&oacute;digo ajude.
 Isto &eacute; o que vimos no post anterior:
 
-    #!ruby
+    {% highlight ruby %}
     multiplica = lambda { |x, y| x * y }
     multiplica.call(21, 2) # =&gt; 42
+    {% endhighlight %}
 
 Ok, agora vamos utilizar o m&eacute;todo **curry**:
 
-    #!ruby
+    {% highlight ruby %}
     multiplica = lambda { |x, y| x * y }.curry
     multiplica.call(21).call(2) # =&gt; 42
+    {% endhighlight %}
 
 Em vez de ter uma fun&ccedil;&atilde;o que recebe dois par&acirc;metros, temos duas
 fun&ccedil;&otilde;es (note que o m&eacute;todo
@@ -28,22 +35,24 @@ fun&ccedil;&otilde;es (note que o m&eacute;todo
 quando definimos
 alguma fun&ccedil;&atilde;o dessa forma:
 
-    #!ruby
+    {% highlight ruby %}
     lambda { |x, y| x * y }
+    {% endhighlight %}
 
 Ao utilizar o m&eacute;todo **curry** acabamos obtendo isso:
 
-    #!ruby
+    {% highlight ruby %}
     lambda { |x| lambda { |y| x * y } }
+    {% endhighlight %}
 
-### E por que isso pode ser &uacute;til? ###
+### E por que isso pode ser &uacute;til? 
 
 Em alguns casos, quando voc&ecirc; tem uma fun&ccedil;&atilde;o que recebe m&uacute;ltiplos
 par&acirc;metros, pode
 ser &uacute;til fixar um deles. A partir disso voc&ecirc; acaba obtendo uma nova fun&ccedil;&atilde;o (&agrave;s
 vezes referida como _fun&ccedil;&atilde;o parcial_). Veja o exemplo:
 
-    #!ruby
+    {% highlight ruby %}
     multiplica = lambda { |x, y| x * y }.curry
 
     dobro = multiplica.call(2)  # =&gt; nova fun&ccedil;&atilde;o, com x = 2
@@ -51,6 +60,7 @@ vezes referida como _fun&ccedil;&atilde;o parcial_). Veja o exemplo:
 
     dobro.call(21)  # =&gt; 42
     triplo.call(14) # =&gt; 42
+    {% endhighlight %}
 
 Estes exemplos funcionam apenas na vers&atilde;o 1.9 do ruby, na vers&atilde;o 1.8
 n&atilde;o existe o

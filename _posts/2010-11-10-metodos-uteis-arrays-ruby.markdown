@@ -1,3 +1,8 @@
+---
+layout: post
+title: M&eacute;todos &uacute;teis para arrays em ruby
+---
+
 Para estrear o blog, vamos com um post bem simples e que serve de introdu&ccedil;&atilde;o
 para quem est&aacute; come&ccedil;ando com *ruby*. Ao aprender uma nova linguagem, 
 temos a tend&ecirc;ncia de escrever o c&oacute;digo da mesma maneira que escrevemos na 
@@ -6,11 +11,12 @@ linguagem que j&aacute; estamos habituados.
 Por exemplo, algu&eacute;m que esteja aprendendo *ruby*, e que precise iterar 
 em algum *array*, provavelmente ir&aacute; fazer algo parecido com isso:
 
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "Led Zeppelin", "The Who", "Grand Funk Railroad" ]
     for banda in bandas
         puts "Eu gosto de #{banda}"
     end
+    {% endhighlight %}
 
 N&atilde;o h&aacute; nada de errado nesse exemplo (talvez voc&ecirc; n&atilde;o compartilhe do mesmo gosto
 musical, mas a&iacute; o problema &eacute; outro), ele funciona exatamente da maneira esperada.    
@@ -18,13 +24,14 @@ Esse estilo &eacute; o mais parecido com as outras linguagens, praticamente toda
 linguagem possui um la&ccedil;o **for**. Por&eacute;m, essa n&atilde;o &eacute; a maneira mais "ruby" 
 de se iterar em um array.
     
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "Led Zeppelin", "The Who", "Grand Funk Railroad" ]
     bandas.each { |banda| puts "Eu gosto de #{banda}" }
     # ou de outra forma
     bandas.each do |banda|
         puts "Eu gosto de #{banda}"
     end
+    {% endhighlight %}
 
 Agora temos um c&oacute;digo que faz exatamente o mesmo que o exemplo anterior.
 A diferen&ccedil;a fica por conta do m&eacute;todo **each**, que recebe um bloco. Esse m&eacute;todo
@@ -40,7 +47,7 @@ dada uma certa condi&ccedil;&atilde;o, como se fosse uma esp&eacute;cie de filtr
 est&aacute; acostumado com outras linguagens, &eacute; poss&iacute;vel que escreva algo parecido
 com o exemplo abaixo.
 
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "The Beatles", "The Animals", "Guess Who" ]
     bandas_com_the = []
     for banda in bandas
@@ -48,6 +55,7 @@ com o exemplo abaixo.
             bandas_com_the &lt;&lt; banda
         end
     end
+    {% endhighlight %}
 
 De novo, temos um **for** para iterar no array, e tamb&eacute;m temos um **if** para
 selecionar os elementos corretos e adicion&aacute;-los no array resultante. At&eacute; esse
@@ -55,9 +63,11 @@ ponto, nenhum segredo. Nesse caso poder&iacute;amos tamb&eacute;m substituir o *
 m&eacute;todo **each** e deixar com mais cara de "ruby". Mas nesse caso, quem se
 encaixa melhor &eacute; o m&eacute;todo **select**.
 
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "The Beatles", "The Animals", "Guess Who" ]
-    bandas_com_the = bandas.select { |banda| banda.start_with?("The") }
+    bandas_com_the = ban
+    bandas.select { |banda| banda.start_with?("The") }
+    {% endhighlight %}
 
 O resultado &eacute; o mesmo que o c&oacute;digo anterior, apenas com um c&oacute;digo bem
 mais enxuto. O bloco que passamos para o m&eacute;todo **select** deve retornar
@@ -65,25 +75,28 @@ mais enxuto. O bloco que passamos para o m&eacute;todo **select** deve retornar
 ou n&atilde;o ao resultado. Tamb&eacute;m existe o m&eacute;todo **reject** que faz o inverso, ou
 seja, se o bloco retorna *true* o elemento n&atilde;o &eacute; adicionado ao resultado.
 
-    #!ruby
+    {% highlight ruby %}
     bandas_sem_the = bandas.reject { |banda| banda.start_with?("The") }
+    {% endhighlight %}
 
 Imagine agora que voc&ecirc; precisa alterar todos os elementos do array, seguindo uma mesma
 regra. Exemplo: adicionar o prefixo "The " ao nome de cada banda presente no *array*.
 
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "Beatles", "Who", "Clash" ]
     bandas_com_the = []
     for banda in bandas
         bandas_com_the &lt;&lt; "The " + banda
     end
+    {% endhighlight %}
 
 Mais uma vez, um exemplo que funciona corretamente, mas n&atilde;o muito "ruby". Nesse 
 caso, o m&eacute;todo mais indicado &eacute; o **map**.
 
-    #!ruby
+    {% highlight ruby %}
     bandas = [ "Beatles" , "Who", "Clash" ]
     bandas_com_the = bandas.map { |banda| "The " + banda }
+    {% endhighlight %}
 
 Cada elemento do array vai ser "mapeado" num novo elemento do array 
 resultante, usando o retorno do bloco que passamos. Se voc&ecirc; j&aacute; viu um
@@ -93,18 +106,20 @@ m&eacute;todos fazem exatamente a mesma coisa.
 Para o &uacute;ltimo exemplo do post, imagine agora que voc&ecirc; precisa somar todos
 os elementos de um array. Primeiro, a maneira habitual:
 
-    #!ruby
+    {% highlight ruby %}
     numeros = [ 1, 2, 4, 8 ]
     soma = 0
     for n in numeros
         soma += n
     end
+    {% endhighlight %}
     
 Depois, a maneira "ruby", utilizando o m&eacute;todo **reduce**:
 
-    #!ruby
+    {% highlight ruby %}
     numeros = [ 1, 2, 4, 8 ]
     soma = numeros.reduce { |soma, n| soma += n }
+    {% endhighlight %}
 
 O **reduce** &eacute; utilizado para fazer uma agrega&ccedil;&atilde;o. Ele &eacute; diferente dos
 outros m&eacute;todos, pois o bloco que passamos para ele deve receber dois par&acirc;metros.
@@ -116,9 +131,10 @@ multipli&ccedil;&atilde;o, divis&atilde;o, etc. Para quem j&aacute; viu algo par
 Nem precisamos nos restringir somente a n&uacute;meros, podemos fazer uma agrega&ccedil;&atilde;o 
 em strings tamb&eacute;m:
 
-    #!ruby
+    {% highlight ruby %}
     ccr = [ "Creedence", "Clearwater", "Revival" ]
     ccr = ccr.reduce { |soma, n| soma += " " + n }
+    {% endhighlight %}
     
 Claro que no exemplo acima &eacute; bem mais simples utilizar o **join**, essa n&atilde;o &eacute; a
 maneira recomendada. Eu queria apenas ilustrar o exemplo de que o **reduce** n&atilde;o

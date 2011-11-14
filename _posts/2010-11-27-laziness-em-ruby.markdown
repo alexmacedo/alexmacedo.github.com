@@ -1,3 +1,8 @@
+---
+layoyt: post
+title: Laziness em ruby
+---
+
 Nos últimos posts tenho falado sobre programação funcional. Talvez
 seja o momento
 de mostrar algo útil, apenas para não parecer "isso é legal, mas nunca
@@ -8,14 +13,16 @@ Cantrell](http://innig.net/software/ruby/closures-in-ruby.rb)
 que vimos para
 implementar o conceito de _lazyness_.
 
-### O que é lazyness? ###
+### O que é lazyness? 
+
 Para variar, veja o [artigo](http://en.wikipedia.org/wiki/Lazy_evaluation) na
 Wikipedia para maior referência. Explicando de maneira rápida, _lazy
 evaluation_ é
 adiar uma instrução/computação/execução até o momento em que o resultado é
 requerido.
 
-### E qual a utilidade? ###
+### E qual a utilidade? 
+
 Imagine que você precisa instanciar um objeto que vai consumir
 bastante memória, por exemplo.
 Ao utilizar _lazy loading_ (mesma coisa que _lazy evaluation_) você
@@ -30,7 +37,8 @@ Hibernate (para Java) e o Entity Framework (para C#) fazem para
 prevenir chamadas desnecessárias
 ao banco de dados.
 
-### Implementando o _lazy loading_ ###
+### Implementando o _lazy loading_ 
+
 Vamos pensar na nossa implementação. Iremos criar um objeto **Lazy**, que vai
 funcionar parecido com um
 [proxy](http://en.wikipedia.org/wiki/Proxy_pattern) para
@@ -38,7 +46,7 @@ o nosso objeto real. A diferença é que o objeto Lazy só vai
 executar/acessar o objeto
 real quando for necessário, e pra isso vamos usar _closures_.
 
-   #!ruby
+   {% highlight ruby %}
    class LazyProc
      def initialize(&computation)
        @computation = computation
@@ -57,25 +65,27 @@ real quando for necessário, e pra isso vamos usar _closures_.
    def lazy(&block) # atalho para criar a proc
      LazyProc.new(&block)
    end
+   {% endhighlight %}
 
 Vamos tentar entender o código acima. No **initialize** recebemos uma _Proc_ que
 é guardada para execução posterior. Na primeira vez que for chamado um método,
 a proc será executada e a chamada será encaminhada para o resultado da execução
 desta proc. Vamos ver se funciona:
 
-   #!ruby
+   {% highlight ruby %}
    a = lazy { puts "Resolvendo..."; "Primeiro teste" }
    puts a.upcase
    # Resolvendo
    # PRIMEIRO TESTE
    # => nil
+   {% endhighlight %}
 
 Parece que deu certo. Veja que aparece "Resolvendo", porque a nossa _Proc_ foi
 executada apenas quando chamamos o método **upcase**. Mas será que não
 existe nenhum
 problema?
 s
-   #!ruby
+   {% highlight ruby %}
    a = lazy { "Segundo teste" }
    a
    # => #<LazyProc:0x00000001082630>
@@ -83,6 +93,7 @@ s
    # => #<LazyProc:0x00000001082630>
    a.respond_to?(:upcase)
    # => false
+   {% endhighlight %}
 
 Quando chamamos o **to_s** ou o **respond_to?**
 gostaríamos que a nossa proc fosse executada, mas isso não está acontecendo.
@@ -96,7 +107,7 @@ Porém, devemos fazer isso para todos os métodos presentes em
 melhor, apesar de parecer radical, é remover todos os métodos na nossa classe
 **LazyProc**. Vejamos como vai ficar:
 
-   #!ruby
+   {% highlight ruby %}
    class LazyProc
      # apagamos os métodos existentes
      instance_methods.each { |m| undef_method m unless m =~ /^__/ }
@@ -114,6 +125,7 @@ melhor, apesar de parecer radical, é remover todos os métodos na nossa classe
        @value
      end
    end
+   {% endhighlight %}
 
 Isso vai gerar um _warning_:
 
@@ -132,17 +144,18 @@ caso alguém sobrescreva o **send**, ainda pode utilizar o _alias_ para
 se referir ao
 método antigo. Vamos testar agora:
 
-   #!ruby
+   {% highlight ruby %}
    a = lazy { puts "Resolvendo..."; "Outro teste" }
    # Resolvendo
    # => "Outro teste"
+   {% endhighlight %}
 
 Estranho! Só de executar a atribuição no irb, a nossa proc já foi
 executada. Isso é a
 mesma coisa que _eager evaluation_, não é o que a gente esperava. O que foi que
 aconteceu? Vamos começar a debugar:
 
-   #!ruby
+   {% highlight ruby %}
    class LazyProc
      # apagamos os métodos existentes
      instance_methods.each { |m| undef_method m unless m =~ /^__/ }
@@ -162,19 +175,21 @@ sendo chamado
        @value
      end
    end
+   {% endhighlight %}
 
 E executando:
 
-   #!ruby
+   {% highlight ruby %}
    a = lazy { "Teste" }
    # chamando inspect
    # => "Teste"
+   {% endhighlight %}
 
 Ah! A chamada para **inspect** está fazendo com que a nossa proc seja executada
 logo de imediato. O jeito é definir o método **inspect** novamente. Além disso,
 vamos definir também o método **respond_to?**:
 
-   #!ruby
+   {% highlight ruby %}
    class LazyProc
      alias __class__ class
      instance_methods.each { |m| undef_method m unless m =~ /^__/ or
@@ -208,6 +223,7 @@ m == :object_id }
        @value
      end
    end
+   {% endhighlight %}
 
  Vamos ver quais foram as mudanças. Primeiro, criamos um _alias_ para
 **class**, porque
@@ -225,7 +241,7 @@ para a nossa proc ser executada.
 
 Será que funciona agora?
 
-   #!ruby
+   {% highlight ruby %}
    a = lazy { puts "Resolvendo..."; "Mais um teste" }
    # => #<LazyProc computation=#<Proc:0x0000000202eb38>
    a
@@ -236,13 +252,14 @@ Será que funciona agora?
    # => nil
    a
    # => "Teste"
+   {% endhighlight %}
 
 Parece que funciona como planejado. Note que a primeira vez que digitamos "a"
 no interpretador, aparece o **inspect** da **LazyProc**, enquanto na segunda
 vez, é chamado o **inspect** da **String**. Isso ocorreu porque da segunda
 vez a nossa proc já tinha sido executada.
 
-### Exemplo mais elaborado ###
+### Exemplo mais elaborado 
 
 Antes eu disse que a vantagem de utilizar _lazy evaluation_ era para economizar
 memória quando tivéssemos objetos muito grandes. Mas apenas dei exemplos com
@@ -266,7 +283,7 @@ desnecessariamente.
 Vamos lá, primeiro vamos criar a nossa estrutura de dados que vai representar
 a lista:
 
-   #!ruby
+   {% highlight ruby %}
    class LispyEnumerable
      include Enumerable
 
@@ -282,6 +299,7 @@ a lista:
        end
      end
    end
+   {% endhighlight %}
 
 Um pouco de contexto. O nome da classe é **LispyEnumerable** porque imita uma
 lista em Lisp. Em Lisp, se tivermos uma lista, por exemplo, igual a (1 2 3 4),
@@ -298,11 +316,12 @@ Agora só precisamos criar uma lista que tenha a estrutura desejada, ou seja,
 tenha um primeiro elemento inteiro, e o restante da lista é uma **LazyProc**.
 Vamos lá:
 
-   #!ruby
+   {% highlight ruby %}
    def fibo(a, b)
      lazy { [ a, fibo(b, a+b) ] } # => so nao temos recursao infinita
 por causa do lazy
    end
+   {% endhighlight %}
 
 Veja que a nossa lista é definida recursivamente. Se tivermos
 paciência de executar
@@ -319,7 +338,7 @@ dentro de um array, etc. Até parece Inception.
 
 Vamos testar isso agora (cruzando os dedos):
 
-   #!ruby
+   {% highlight ruby %}
    fibo_list = LispyEnumerable.new(fibo(1,1))
    fibo_list.each do |i|
      puts i
@@ -338,12 +357,13 @@ Vamos testar isso agora (cruzando os dedos):
    # 89
    # 144
    # => nil
+   {% endhighlight %}
 
 Sim, funcionou. Pode não ser a maneira mais óbvia ou rápida de imprimir
 os primeiros números da sequência _Fibonacci_, mas com certeza é uma das
 mais legais. Isso se você considera uma maneira estranha como sendo legal.
 
-### E agora? ###
+### E agora? 
 Bem, se você quiser _lazyness_ em Ruby, você não precisa se dar a todo
 esse trabalho,
 porque já existem gems pra isso. Na verdade, a classe **LazyProc** é fortemente

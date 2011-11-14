@@ -1,3 +1,8 @@
+---
+layout: post
+title: Closures em ruby
+---
+
 Que ruby &eacute; uma linguagem orientada a objetos todo mundo sabe (ou pelo
 menos deveria
 saber). Por&eacute;m ruby &eacute; uma linguagem multi-paradigma, ou seja, ela suporta outros
@@ -10,7 +15,7 @@ desanima por n&atilde;o conhecer nenhuma das linguagens citadas acima, n&atilde;
 Contanto que voc&ecirc; conhe&ccedil;a ruby, caso contr&aacute;rio pode se desanimar (se voc&ecirc; souber
 python, ainda existem esperan&ccedil;as).
 
-### O que &eacute; uma _closure_? ###
+### O que &eacute; uma _closure_? 
 
 Em programa&ccedil;&atilde;o funcional, a pe&ccedil;a chave &eacute; chamada de _closure_.
 Qualquer linguagem
@@ -46,27 +51,29 @@ fun&ccedil;&atilde;o que n&atilde;o possui nome, enquanto uma _closure_ deve pos
 caracter&iacute;sticas ditas
 acima.
 
-### Blocks ###
+### Blocks 
 Vamos come&ccedil;ar de maneira bem simples, explicando o que s&atilde;o _blocks_.
 S&atilde;o exatamente
 blocos de c&oacute;digo, que voc&ecirc; pode passar para m&eacute;todos. Vejamos:
 
-    #!ruby
+    {% highlight ruby %}
     def duas_vezes
       yield
       yield
     end
 
     duas_vezes { puts "Frase repetida!" }
+    {% endhighlight %}
 
 Tamb&eacute;m podemos passar par&acirc;metros para o bloco recebido pelo m&eacute;todo:
 
-    #!ruby
+    {% highlight ruby %}
     def cumprimenta
       yield "Alexandre"
     end
 
     cumprimenta { |nome| puts "Ol&aacute; #{nome}!" }
+    {% endhighlight %}
 
 Isso &eacute; conhecido como _passagem impl&iacute;cita_ de bloco. Ao chamar
 **yield**, voc&ecirc; est&aacute;
@@ -75,12 +82,13 @@ for passado,
 iremos obter um erro (*no_block_given*). Existe uma outra maneira de atingir
 o mesmo resultado, s&oacute; que de forma diferente.
 
-    #!ruby
+    {% highlight ruby %}
     def cumprimenta(&amp;cumprimento)
       cumprimento.call("Alexandre")
     end
 
     cumprimenta { |nome| puts "Como vai, #{nome}?" }
+    {% endhighlight %}
 
 Isso &eacute; o que chamamos de passagem _expl&iacute;cita_ de bloco. O bloco &eacute; a
 nossa vari&aacute;vel
@@ -91,13 +99,13 @@ m&eacute;todo e a vari&aacute;vel que o representa sempre deve estar em &uacute;
 lista de par&acirc;metros.
 Tudo bem, e qual &eacute; a vantagem da passagem expl&iacute;cita sobre a impl&iacute;cita?
 
-### Procs e lambdas ###
+### Procs e lambdas 
 
 Com a passagem expl&iacute;cita, podemos armazenar o "bloco", e apenas
 execut&aacute;-lo quando
 for necess&aacute;rio, ou pass&aacute;-lo para algum outro m&eacute;todo, como exemplo.
 
-    #!ruby
+    {% highlight ruby %}
     def execucao_postergada(&amp;bloco)
       @bloco = bloco # guardamos o bloco para executar depois
     end
@@ -106,17 +114,19 @@ for necess&aacute;rio, ou pass&aacute;-lo para algum outro m&eacute;todo, como e
     puts "Suponha que passou muito tempo, dias, meses ou anos."
     puts "S&oacute; vou executar o bloco agora:"
     @bloco.call # "Esperou &agrave; toa." s&oacute; aparece agora
+    {% endhighlight %}
 
 Por&eacute;m, ainda estamos restritos a passar apenas um bloco para o nosso m&eacute;todo.
 E se quisess&eacute;mos passar v&aacute;rios blocos?
 
-    #!ruby
+    {% highlight ruby %}
     def dois_blocos(bloco1, bloco2)
         bloco1.call
         bloco2.call
     end
 
     dois_blocos(Proc.new { puts "Primeiro bloco." }, Proc.new { puts "Segundo bloco." })
+    {% endhighlight %}
 
 Pronto! Descobrimos uma maneira de passar quantos blocos forem
 necess&aacute;rios, e de certa
@@ -130,7 +140,7 @@ v&aacute;rias **Procs** em par&acirc;metros ou atribuir **Procs** para vari&aacu
 logo n&atilde;o resta
 d&uacute;vidas da caracter&iacute;stica 1. E a 2, aquela sobre escopo de vari&aacute;veis?
 
-    #!ruby
+    {% highlight ruby %}
     k = 10
     closure = Proc.new { |v| v * k }
 
@@ -141,13 +151,14 @@ d&uacute;vidas da caracter&iacute;stica 1. E a 2, aquela sobre escopo de vari&aa
 
     meu_metodo(10, closure)   # 100 e nao 50
     closure.call(10)          # 100
+    {% endhighlight %}
 
 Ent&atilde;o, sabe aquela hist&oacute;ria sobre guardar contexto? &Eacute; isso que aconteceu quando
 criamos a closure, por isso, apesar de redefinir o **k** em outro
 escopo, ela se "lembrou"
 do valor correto. E o inverso, funciona? Vamos ver outro exemplo:
 
-    #!ruby
+    {% highlight ruby %}
     def somador
       soma = 0
       Proc.new { |item| soma += item }
@@ -158,11 +169,12 @@ do valor correto. E o inverso, funciona? Vamos ver outro exemplo:
     s.call(1)  # 1
     soma = 0
     s.call(10) # 11
+    {% endhighlight %}
 
 Veja que tamb&eacute;m funciona, a nossa closure ignora a vari&aacute;vel _soma_ fora do
 escopo do m&eacute;todo. E o pr&oacute;ximo exemplo?
 
-    #!ruby
+    {% highlight ruby %}
     k = 10
 
     multiplica = Proc.new { |v| k *= v }
@@ -170,6 +182,7 @@ escopo do m&eacute;todo. E o pr&oacute;ximo exemplo?
 
     multiplica.call(2) # 20
     soma.call(10)      # 30
+    {% endhighlight %}
 
 O exemplo acima parece bobo, mas mostra uma importante caracter&iacute;stica
 da linguagem
@@ -194,16 +207,17 @@ Outra coisa, utilizar o **Proc.new** n&atilde;o &eacute; a &uacute;nica maneira 
 _closures_ em ruby.
 A verdade &eacute; que existem outras maneiras at&eacute; mais sucintas:
 
-    #!ruby
+    {% highlight ruby %}
     k = 10
     multiplica = lambda { |v| k *= v } # utilizando lambda
     soma = proc { |v| k += v }         # e utilizando proc
     multiplica.call(2) # 20
     soma.call(10)      # 30
+    {% endhighlight %}
 
 Apesar de parecerem id&ecirc;nticos, existem diferen&ccedil;as.
 
-### Diferen&ccedil;as entre _Procs_ e _lambdas_ ###
+### Diferen&ccedil;as entre _Procs_ e _lambdas_ 
 
 Bem, aqui vai um pouco de confus&atilde;o. Se voc&ecirc; utiliza o ruby 1.8,
 **proc** e **lambda** s&atilde;o

@@ -1,3 +1,8 @@
+---
+layout: post
+title: Usando o Bundler
+---
+
 O [Bundler](http://gembundler.com/) é uma _gem_ com o propósito de
 resolver facilmente
 dependências em projetos _ruby_. Quem já criou um projeto utilizando a terceira
@@ -8,7 +13,7 @@ a projetos
 com _Rails_, na verdade ele pode (e deve) ser usado com qualquer
 projeto em _ruby_.
 
-=== O problema ===
+### O problema 
 
 A comunidade _ruby_ é muito ágil e prolífica, o que gera uma grande quantidade
 de _gems_ que são atualizadas constantemente. Isso é muito bom em geral, porém
@@ -29,7 +34,7 @@ não tem instalado no seu ambiente. Você precisa descobrir primeiro
 quais são as dependências,
 para depois instalar as que são necessárias.
 
-=== Como o _bundler_ resolve o problema? ===
+### Como o _bundler_ resolve o problema? 
 
 O _bundler_ resolve o problema "registrando" todas
 as dependências em um arquivo chamado **Gemfile**, que fica na pasta
@@ -45,7 +50,7 @@ o _bundler_ instalado, agora precisamos apenas escrever o arquivo _Gemfile_
 Suponha que vamos criar uma aplicação usando o _sinatra_ e mais algumas outras
 gems.
 
-   #!ruby
+   {% highlight ruby %}
    source "http://rubygems.org"
 
    gem "sinatra", ">= 1.0"
@@ -56,6 +61,7 @@ gems.
    group :test do
      gem "rack-test", :require => "rack/test"
    end
+   {% endhighlight %}
 
 Dentro da pasta com o _Gemfile_ basta executar:
 
@@ -147,15 +153,16 @@ projetos utilizando versões
 utilizando sempre
  a mesma versão de uma gem.
 
-== Explicando o Gemfile ===
+### Explicando o Gemfile 
 
 Vamos ver em detalhes o _Gemfile_. No início temos o _source_,
 informando a url que será
 usada para as gems que precisam ser instaladas. Depois para cada
 dependência, usamos:
 
-   #!ruby
+   {% highlight ruby %}
    gem "nome", "versão"
+   {% endhighlight %}
 
 Note que ao informar a versão, podemos utilizar vários modificadores.
 Por exemplo ">= 1.0",
@@ -168,13 +175,14 @@ recente disponível.
 
 Você também deve ter estranhado o _:require_, como no exemplo abaixo:
 
-   #!ruby
+   {% highlight ruby %}
    gem "rack-contrib", :require => "rack/contrib"
+   {% endhighlight %}
 
 Isso é porque podemos (na verdade devemos) utilizar o bundler para adicionar as
 gems no nosso projeto. Veja o exemplo abaixo:
 
-   #!ruby
+   {% highlight ruby %}
    require "rubygems"
    require "bundler/setup"
 
@@ -182,26 +190,29 @@ gems no nosso projeto. Veja o exemplo abaixo:
    require "sinatra"
    require "rack/contrib"
    # etc
+   {% endhighlight %}
 
 Note que primeiro devemos incluir o "bundler/setup" antes das demais gems, pois
 ele que irá se encarregar de utilizar as versões corretas. Outra
 maneira de atingir
 os mesmos resultados seria:
 
-   #!ruby
+   {% highlight ruby %}
    require "rubygems"
    require "bundler"
 
    Bundler.require
 
    # codigo
+   {% endhighlight %}
 
 Chamar o _Bundler.require_ vai incluir todas as gems especificadas no _Gemfile_.
 O problema é que no _Gemfile_ o nome da gem é _rack-contrib_, o que faria o
 _bundler_ tentar fazer o seguinte:
 
-   #!ruby
+   {% highlight ruby %}
    require "rack-contrib" # o correto é "rack/contrib"
+   {% endhighlight %}
 
 Por isso precisamos indicar o nome a ser usado na hora em que a gem
 for adicionada
@@ -209,10 +220,11 @@ ao projeto, através da opção _:require_.
 
 Outra coisa interessante é que podemos agrupar as gems, como no caso:
 
-   #!ruby
+   {% highlight ruby %}
    group :test do
      gem "rack-test", :require => "rack/test"
    end
+   {% endhighlight %}
 
 O nome do grupo pode ser qualquer um, mas o mais comum será nomes como
 **:test**, **:production**
@@ -227,12 +239,13 @@ estamos interessados em testes, então podemos fazer:
 Dessa forma, as gems relacionadas no grupo _:test_ serão ignoradas. No nosso
 código também podemos utilizar os grupos da seguinte maneira:
 
-   #!ruby
+   {% highlight ruby %}
    Bundler.require(:development)
+   {% endhighlight %}
 
 Para adicionar apenas as gems que estão no grupo _:development_.
 
-=== Atualizando uma gem ===
+### Atualizando uma gem
 
 Se você quiser atualizar uma gem, precisa mudar a versão no _Gemfile_ e rodar
 novamente o comando _bundle install_ que o _bundler_ irá resolver as novas
@@ -256,7 +269,7 @@ corretamente
 o _Gemfile.lock_ para utilizar essa versão. Novamente, o comando irá mostrar um
 conflito caso não seja possível atualizar a gem.
 
-=== Deploy ===
+### Deploy
 
 Um último comando que pode ser muito interessante quando for um projeto web, e
 estamos no ambiente de produção:
@@ -278,7 +291,7 @@ aplicação, e não no sistema;
 gem esteja disponível
  no sistema;
 
-=== Concluindo ===
+### Concluindo
 
 O _bundler_ é uma ferramenta que se tornou um padrão para projetos em
 _ruby_. Por isso,
@@ -286,7 +299,7 @@ independente de desenvolver um projeto Rails, uma nova Gem ou um
 simples script, é bom
 utilizá-lo, principalmente quando houver vários desenvolvedores envolvidos.
 
-=== Maiores referências ===
+### Maiores referências
 
 - [Site oficial do Bundler](http://gembundler.com/)
 - [Screencast sobre o

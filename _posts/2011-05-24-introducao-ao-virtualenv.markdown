@@ -1,3 +1,8 @@
+---
+layout: post
+title: Introdução ao virtualenv
+---
+
 Uma das ferramentas que eu mais gosto do ecossistema  _ruby_ &eacute; o
 [rvm](https://rvm.beginrescueend.com/). O objetivo do _rvm_ &eacute; permitir
 que diversos interpretadores ruby, de diferentes vers&otilde;es, possam coexistir 
