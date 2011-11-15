@@ -41,7 +41,7 @@ as dependências em um arquivo chamado **Gemfile**, que fica na pasta
 raiz do projeto.
 Para utilizar o _bundler_, precisamos antes instalar a sua gem:
 
-   $ gem install bundler
+    $ gem install bundler
 
 Note que eu não usei _sudo_, porque estou usando o _rvm_ (talvez eu fale sobre o
 _rvm_ no futuro). Caso você não utilize o _rvm_, precisará incluir o _sudo_. Com
@@ -65,7 +65,7 @@ gems.
 
 Dentro da pasta com o _Gemfile_ basta executar:
 
-   $ bundle install
+    $ bundle install
 
 E pronto! Serão instaladas todas as gems que você não possui no sistema. Repare
 que também não incluí _sudo_ no comando, e nesse caso não é
@@ -77,16 +77,16 @@ a senha de administrador para instalar alguma gem, o bundle irá pedir
 a senha através
 do prompt. Após a execução do comando, a saída vai ser algo do tipo:
 
-   Fetching source index for http://rubygems.org/
-   Using haml (3.0.24)
-   Using json (1.4.6)
-   Using rack (1.2.1)
-   Installing rack-contrib (1.1.0)
-   Using rack-test (0.5.6)
-   Using tilt (1.1)
-   Using sinatra (1.1.0)
-   Using bundler (1.0.7)
-   Your bundle is complete! It was installed into #{pasta do seu sistema}
+    Fetching source index for http://rubygems.org/
+    Using haml (3.0.24)
+    Using json (1.4.6)
+    Using rack (1.2.1)
+    Installing rack-contrib (1.1.0)
+    Using rack-test (0.5.6)
+    Using tilt (1.1)
+    Using sinatra (1.1.0)
+    Using bundler (1.0.7)
+    Your bundle is complete! It was installed into #{pasta do seu sistema}
 
 Veja que existem mais gems do que aquelas que especificamos. É porque uma gem
 pode ter suas próprias dependências, e elas também precisam ser instaladas. No
@@ -98,7 +98,7 @@ Após a execução do _bundle install_, surge um arquivo chamado
 **Gemfile.lock** na
 mesma pasta. No caso acima, ele ficou com o seguinte conteúdo:
 
-   GEM
+    GEM
      remote: http://rubygems.org/
      specs:
        haml (3.0.24)
@@ -113,10 +113,10 @@ mesma pasta. No caso acima, ele ficou com o seguinte conteúdo:
          tilt (~> 1.1)
        tilt (1.1)
 
-   PLATFORMS
+    PLATFORMS
      ruby
 
-   DEPENDENCIES
+    DEPENDENCIES
      haml
      json (= 1.4.6)
      rack-contrib
@@ -234,7 +234,7 @@ restringir quais gems serão instaladas. Se estamos em um ambiente de
 produção, não
 estamos interessados em testes, então podemos fazer:
 
-   $ bundle install --without test
+    $ bundle install --without test
 
 Dessa forma, as gems relacionadas no grupo _:test_ serão ignoradas. No nosso
 código também podemos utilizar os grupos da seguinte maneira:
@@ -262,7 +262,7 @@ especificar. Porém o _Gemfile.lock_ sempre irá utilizar a versão 3.0.24, mesm
 que seja lançada depois uma nova versão. Nesse caso que queremos utilizar sempre
 a versão mais nova de uma gem, existe o comando:
 
-   $ bundle update GEM
+    $ bundle update GEM
 
 Esse comando irá atualizar para a versão mais nova da GEM, e atualizar
 corretamente
@@ -274,7 +274,7 @@ conflito caso não seja possível atualizar a gem.
 Um último comando que pode ser muito interessante quando for um projeto web, e
 estamos no ambiente de produção:
 
-   $ bundle install --deployment
+    $ bundle install --deployment
 
 A flag --deployment irá mudar o comportamento habitual do _bundle
 install_. Entre as
