@@ -1,0 +1,74 @@
+* { margin: 0px; padding: 0px; }
+
+body {
+    width: 720px;
+    margin: 20px auto;
+}
+
+#header {
+    display: block;
+    width: 720px;
+    border-bottom: 1px solid #CCC;
+}
+
+#header h2 {
+    width: 200px;
+    float: left;
+}
+
+#header ul {
+    float: left;
+    margin-left: 10px;
+}
+
+#header li {
+    display: inline;
+}
+
+#header li a {
+    text-decoration: none;
+}
+
+#header li a:hover {
+    text-decoration: underline;
+}
+#header small {
+}
+
+#footer {
+    margin-top: 20px;
+    border-top: 1px;
+}
+
+#footer p {
+    text-align: center;
+}
+
+#content {
+    clear: both;
+}
+
+#posts {
+}
+
+#posts ul {
+}
+
+#posts li {
+    list-style-type: none;
+}
+
+#posts span {
+}
+
+#posts a {
+}
+
+#post h1 {
+}
+
+#post p#date {
+}
+
+#post div#body {
+}
