@@ -128,30 +128,20 @@ organizadas
 de uma outra maneira. Agora duas observações IMPORTANTES:
 
 - não edite ou remova o **Gemfile.lock**. Ele nunca deve ser alterado
-pelo usuário,
- apenas pelo próprio _bundle_. Se você precisar adicionar uma nova
-gem, por exemplo,
- você deve editar o _Gemfile_ e rodar novamente o comando _bundle
-install_. Isso é
- importante para manter a consistência do projeto.
+pelo usuário, apenas pelo próprio _bundle_. Se você precisar adicionar uma nova
+gem, por exemplo, você deve editar o _Gemfile_ e rodar novamente o comando _bundle
+install_. Isso é importante para manter a consistência do projeto.
 
 - sempre inclua o _Gemfile.lock_ no seu controle de versão. Pode parecer
  estranho, você deve pensar que o _Gemfile_ seria o suficiente, mas o
-_Gemfile.lock_ é
- igualmente importante (ou mais). No exemplo acima, você deve ter
-notado que eu não
- especifiquei nenhuma versão para a gem _haml_. Por isso, o bundler utilizou a
+_Gemfile.lock_ é igualmente importante (ou mais). No exemplo acima, você deve ter
+notado que eu não especifiquei nenhuma versão para a gem _haml_. Por isso, o bundler utilizou a
  versão mais recente disponível, no caso a 3.0.24, e guardou essa
-informação no _Gemfile.lock_.
- Se alguém clonar o projeto, e rodar _bundle install_, será utilizada
-a versão informada
- no _Gemfile.lock_, mesmo que exista uma versão mais recente
-disponível. Caso não incluíssemos
- o _lock_ no repositório, isso geraria uma inconsistência, com
-projetos utilizando versões
- de gems diferentes. O _Gemfile.lock_ é a garantia de que todos estão
-utilizando sempre
- a mesma versão de uma gem.
+informação no _Gemfile.lock_. Se alguém clonar o projeto, e rodar _bundle install_, será utilizada
+a versão informada no _Gemfile.lock_, mesmo que exista uma versão mais recente
+disponível. Caso não incluíssemos o _lock_ no repositório, isso geraria uma inconsistência, com
+projetos utilizando versões de gems diferentes. O _Gemfile.lock_ é a garantia de que todos estão
+utilizando sempre a mesma versão de uma gem.
 
 ### Explicando o Gemfile 
 
@@ -302,6 +292,5 @@ utilizá-lo, principalmente quando houver vários desenvolvedores envolvidos.
 ### Maiores referências
 
 - [Site oficial do Bundler](http://gembundler.com/)
-- [Screencast sobre o
-bundler](http://railscasts.com/episodes/201-bundler) (um pouco
+- [Screencast sobre o bundler](http://railscasts.com/episodes/201-bundler) (um pouco
 desatualizado)

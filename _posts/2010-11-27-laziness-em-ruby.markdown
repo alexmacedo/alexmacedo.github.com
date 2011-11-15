@@ -1,5 +1,5 @@
 ---
-layoyt: post
+layout: post
 title: Laziness em ruby
 ---
 
